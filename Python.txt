@@ -1,0 +1,414 @@
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.impute import SimpleImputer
+import matplotlib.pyplot as plt 
+
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.preprocessing import LabelEncoder
+
+from sklearn.linear_model import LinearRegression
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.svm import SVR
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.ensemble import RandomForestRegressor
+
+
+
+from sklearn.metrics import r2_score
+
+Token
+d854b698f5b0324ccc23f546b1ccefb3d328695b240b5e2a
+
+Numpy - Library of efficient matrices
+Scipy - Collection of packages with math and science capabilities
+matplotlib -  Mature, widely used visualization library .More oprions
+Pandas - library for reak world data. Provides matrix like data structures, time series functionality and more
+sci-kit learn - library offering many machine learning algorithms
+sci-kit learn  cheatsheet - 	https://scikit-learn.org/stable/tutorial/machine_learning_map/  
+Jupyter - shell and web bases notebooks
+
+
+ctrl +shift+p for opening up shortcuts
+
+to execute a command like '40+2' in Python -  ctrl+enter
+
+*
+import numpy as np
+import pandas as pd
+
+from pandas import Series, DataFrame
+
+
+
+
+
+import numpy as np
+import pandas as pd
+
+import matplotlib.pyplot as plt
+import pylab as plt
+import seaborn as sb
+from IPython.display import Image
+from IPython.core.display import HTML 
+from pylab import rcParams
+
+import sklearn
+from sklearn import decomposition
+from sklearn.decomposition import PCA
+from sklearn import datasets
+
+titanic = pd.read_csv('../../../titanic.csv')
+titanic.head()
+oo = pd.read_csv('../data/olympics.csv',skiprows=4)
+oo.head()
+
+
+
+# the number of missing values for every column
+missing = df.isnull().sum()
+
+#fill in the missing values 
+
+
+#Get dummies
+region = df["region"]
+region_encoded = pd.get_dummies(region, prefix='')
+
+#option2: sklearn label encoding: maps each category to a different integer
+
+#create ndarray for label encodoing (sklearn)
+sex = data.iloc[:,1:2].values
+smoker = data.iloc[:,4:5].values
+
+## Encoding
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.impute import SimpleImputer
+import matplotlib.pyplot as plt 
+
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.preprocessing import LabelEncoder
+
+
+le = LabelEncoder()
+sex[:,0] = le.fit_transform(sex[:,0])
+sex = pd.DataFrame(sex)
+sex.columns = ['sex']
+le_sex_mapping = dict(zip(le.classes_, le.transform(le.classes_)))
+print("Sklearn label encoder results for sex:")
+print(le_sex_mapping)
+print(sex[:10])
+
+
+#One Hot encoding
+#create ndarray for one hot encodoing (sklearn)
+region = data.iloc[:,5:6].values #ndarray
+
+## ohe for region
+ohe = OneHotEncoder() 
+
+region = ohe.fit_transform(region).toarray()
+region = pd.DataFrame(region)
+region.columns = ['northeast', 'northwest', 'southeast', 'southwest']
+print("Sklearn one hot encoder results for region:")  
+print(region[:10])
+
+
+##take the numerical data from the original data
+X_num = data[['age', 'bmi', 'children']].copy()
+
+##take the encoded data and add to numerical data
+X_final = pd.concat([X_num, region, sex, smoker], axis = 1)
+
+#define y as being the "charges column" from the original dataset
+y_final = data[['charges']].copy()
+
+#Test train split
+X_train, X_test, y_train, y_test = train_test_split(X_final, y_final, test_size = 0.33, random_state = 0 )
+
+
+#standard scaler (fit transform on train, fit only on test)
+s_scaler = StandardScaler()
+X_train = s_scaler.fit_transform(X_train.astype(np.float))
+X_test= s_scaler.transform(X_test.astype(np.float))
+
+##Linear Regression
+lr = LinearRegression().fit(X_train,y_train)
+y_train_pred = lr.predict(X_train)
+y_test_pred = lr.predict(X_test)
+
+
+
+#print score
+print("lr.coef_: {}".format(lr.coef_))
+print("lr.intercept_: {}".format(lr.intercept_))
+print('lr train score %.3f, lr test score: %.3f' % (
+lr.score(X_train,y_train),
+lr.score(X_test, y_test)))
+
+##Random Forest
+forest = RandomForestRegressor(n_estimators = 100,
+                              criterion = 'mse',
+                              random_state = 1,
+                              n_jobs = -1)
+#test train split
+X_train, X_test, y_train, y_test = train_test_split(X_final, y_final, test_size = 0.33, random_state = 0 )
+
+#standard scaler (fit transform on train, fit only on test)
+sc = StandardScaler()
+X_train = sc.fit_transform(X_train.astype(np.float))
+X_test= sc.transform(X_test.astype(np.float))
+
+#fit model
+forest.fit(X_train,y_train.values.ravel())
+y_train_pred = forest.predict(X_train)
+y_test_pred = forest.predict(X_test)
+
+#print score
+print('forest train score %.3f, forest test score: %.3f' % (
+forest.score(X_train,y_train),
+forest.score(X_test, y_test)))
+
+
+
+
+titanic.drop('PassengerId', axis=1, inplace=True)
+titanic.groupby(titanic['Age'].isnull()).mean()
+titanic.['Age'].fillna(titanic['Age'].mean(),inplace=True)
+titanic.isnull().sum()
+
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+
+titanic = pd.read_csv('../../../titanic.csv')
+titanic.head()
+
+
+*
+%pwd // shows current working directory
+*
+%magic //Lists all the magic commands
+
+** Sample Data Frame
+df = DataFrame({'column 1': [1, 1, 2, 2, 3, 3, 3],
+                  'column 2': ['a', 'a', 'b', 'b', 'c', 'c', 'c'],
+                  'column 3': ['A', 'A', 'B', 'B', 'C', 'C', 'C']})
+df
+
+
+df.duplicated()  //The .duplicated() method searches each row in the DataFrame, and returns a True or False value
+df.drop_duplicates()  /# To drop all duplicate rows, just call the drop_duplicates() method off of the DataFrame.
+
+
+
+**Arrays
+arr = np.array([1,2,3,4])
+len(arr)
+type(arr)
+arr * arr
+
+
+v = np.arange(12)
+z = v.reshape([4,3])
+z
+
+Remember , Python is 0 based. First item is 0 and not 1
+
+
+**********PANDAS************************
+
+address = 'C:/Users/Lillian Pierson/Desktop/Exercise Files/Ch01/01_05/mtcars.csv'
+cars = pd.read_csv(address)
+cars.columns = ['car_names','mpg','cyl','disp', 'hp', 'drat', 'wt', 'qsec', 'vs', 'am', 'gear', 'carb']  // Gives column names
+cars.index = cars.car_names  //Provides the index to the column
+cars.head(15)
+
+
+
+Data Source :  C:\Users\nagara\Desktop\GWL\Ankit\Learning\R Studio\sample bank
+
+pd.<Tab>
+pd?
+pd.read_csv?
+//drop a column
+df4.drop('current balance', axis=1)
+
+//drop a row
+df4.drop('current balance', axis=0)
+
+
+//Accesing the index
+data1.index[5]
+data1.iloc[10]
+
+//Sample Data Frame
+df = pd.DataFrame({'month': [1, 4, 7, 10],'year': [2012, 2014, 2013, 2014],'sale':[55, 40, 84, 31]})
+
+import pandas as pd
+data = [['Alex',10],['Bob',12],['Clarke',13]]
+df10 = pd.DataFrame(data,columns = ['Name','Age'])
+print(df10) 
+
+///Read JSON
+import json
+from pandas.io.json import json_normalize
+
+with open('data/monthlySalesbyCategoryMultiple.json') as json_data:
+    d = json.load(json_data)
+
+//Read CSV
+
+import pandas as pd
+
+df = pd.read_csv('~/Desktop/GWL/Ankit/Learning/R Studio/sample bank/sample_ankit.csv')
+
+titanic = pd.read_csv('../../../titanic.csv')
+
+df.loc[23]  //Accesing the Index
+
+len(df)
+df[0:3]  //slicing rows
+df.<column_name> //accessing the column name
+df.columns
+df.info()
+df.head()
+df.head(n=10) //shows first 10 rows
+df.tail()
+df.mean() //gets mean on the data
+df.dtypes
+df = pd.read_csv('~/Desktop/GWL/Ankit/Learning/R Studio/sample bank/sample_ankit.csv', parse_dates = ['date'])  //changed dates to date
+
+df1[['date','item']]  //Selects specific coluns
+df1.shape
+insurance1.dropna() //drops na
+df1.date.value_counts()
+df1.item.sort_values()  //U can use shift+tab to get the  feel of inside options in the bracket
+df1.item == "BRIGHTPATH KIDS FEE"    //Provides True or False
+
+df1.item.str.contains("BRIGHTPATH")   //Provides True or False
+df1[df1.item.str.contains("BRIGHTPATH")]  //Provides actual rows
+
+Calculating sum
+df1.withdrawal.sum()
+
+df2 = df1[df1.item.str.contains("BRIGHTPATH")]
+df2.withdrawal.sum()
+df2.describe()  //Summary statistics
+
+df2 = df.groupby('item').sum();   /Groupby
+df.groupby("age").size() //Provides the counts
+df.groupby(['sex', 'bmi']).count() //Multiple colums Groupby
+
+
+grouped = df.groupby('sex')
+grouped['bmi'].agg([np.sum, np.mean, np.std]) //applying multiple functions at once
+grouped.head() //Provides head
+
+df.loc[:,['age','bmi']] //Selecting specific columns
+df.loc[2,['age','bmi']] //Selecting specific columns at row 2
+df['three'] = df['one'] * df['two'] //Column Addition
+df['flag'] = df['one'] > 2 //Column Addition
+del df['custom_calc']  //Delete Specific column
+
+df.fillna(0) //fills the NaN with 0's
+df.fillna(df.mean()) //fills it with the mean
+dff.fillna(dff.mean()['B':'C'])  //Just for columns B and C
+
+df.dropna(axis=0) //Drops rows with NA values
+df.dropna(axis=1) //Drops columns with NA values
+
+df= df[df.Edition == 2008]  //equals
+df.iloc[3]//Provides data at index 3
+df.iloc[1:3,:]//For slicing rows explicitly
+df.iloc[1, 1] //Getting value explicitly at specific row and column
+df.iloc[:,4:5]  //Accesses the 5th column
+
+df[df.age >18 ] //Get age age column > 18
+df[df['age'].isin(['18','27'])]//isin method for filtering
+
+
+//DATE TIME
+df['hour'] = df['lpep_pickup_datetime'].dt.hour
+df['day'] = df['lpep_pickup_datetime'].dt.date
+
+//Replace
+ df = pd.DataFrame({'a': [0, 1, 2, 3, 4], 'b': [5, 6, 7, 8, 9]})
+ df.replace({'a': 0, 'b': 5}, 100)
+ 
+ df.replace({'age': 19},50) //This replaces 19 in age column with 50
+
+//Merge
+left = pd.DataFrame({'key': ['foo', 'foo'], 'lval': [1, 2]})
+right = pd.DataFrame({'key': ['foo', 'foo'], 'rval': [4, 5]})
+pd.merge(left, right, on='key')
+
+//IF then on column
+ df = pd.DataFrame({'AAA': [4, 5, 6, 7],
+                   'BBB': [10, 20, 30, 40],
+                   'CCC': [100, 50, -30, -50]})
+df.loc[df.AAA >= 5, 'BBB'] = -1   //Singlr column
+df.loc[df.AAA >= 5, ['BBB','CCC']] = -1  //Multiple column
+
+//SORT
+df.sort_values(by=('Labs', 'II'), ascending=False)  //Sort by specific column or an ordered list of columns, with a MultiIndex
+g = lo.groupby(['NOC','Medal']).size().unstack('Medal',fill_value=0)
+g = g.sort_values(['Gold','Silver','Bronze'],ascending=False)[['Gold','Silver','Bronze']]
+g
+
+//CORR
+df.corr() //Provides correlation
+
+
+
+
+str.contains
+str.startswith
+str.isnumeric
+
+//SQL
+import sqlite3
+conn = sqlite3.connect('weather.db')
+wdf = pd.read_sql('SELECT * FROM weather', conn)
+wdf.columns
+wdf = pd.read_sql('SELECT * FROM weather', conn, parse_dates=['DATE'], index_col='DATE')
+wdf.dtypes
+
+
+
+titanic.drop('PassengerId', axis=1, inplace=True)  //Drop the columns
+titanic.groupby(titanic['Age'].isnull()).mean() //Groupby
+
+**************Plotting*************************************
+import matplotlib.pyplot as plt
+%matplotlib inline
+import matplotlib.pyplot as plt
+plt.style.use('seaborn-whitegrid')
+plt.rcParams['figure.figsize'] = (12, 8)
+
+df.groupby(keys).count()['Vendor'].plot()
+df.groupby(keys).count()['Vendor'].loc['2015-03-10'].plot.bar(rot=45)
+
+
+df3.plot(kind='bar');
+df3.plot(kind='line');
+data1.plot(kind='barh');
+df.plot(x = 'charges', y = 'age');  //x will be charges column and y will be age column
+df.plot.box()  //Box plot
+df.plot.scatter(x='a', y='b'); //scatter plot
+
+********************SCI-KIT LEARN ********************************
+
+from sklearn.datasets import load_boston
+boston = load_boston()
+
+
+
+
+
+
+
